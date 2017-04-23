@@ -53,7 +53,7 @@ function xmlToCSV($text) : string
      * @param string $rawInclusionsText
      * @return string
      */
-    $sanitizeInclusions = function($rawInclusionsText) : string
+    $sanitize = function($rawInclusionsText) : string
     {
         return trim(
             preg_replace('/\s+/',' ', // strip multiple whitespaces
@@ -70,10 +70,10 @@ function xmlToCSV($text) : string
     $csv = 'Title'.$separator.'Code'.$separator.'Duration'.$separator.'Inclusions'.$separator.'MinPrice'.PHP_EOL;
 
     foreach ($xml->xpath('TOUR') as $tour){
-        $title      = htmlspecialchars_decode($tour->Title, ENT_QUOTES);
+        $title      = $sanitize($tour->Title);
         $code       = (string) $tour->Code;
         $duration   = (int) $tour->Duration;
-        $inclusions = $sanitizeInclusions($tour->Inclusions);
+        $inclusions = $sanitize($tour->Inclusions);
         $minPrice   = $getMinPrice($tour->xpath('DEP'));
         $csv .= $title.$separator.$code.$separator.$duration.$separator.$inclusions.$separator.$minPrice.PHP_EOL;
     }
