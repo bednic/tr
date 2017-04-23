@@ -42,7 +42,7 @@ function xmlToCSV($text) : string
 
         }
         if ($minPrice < 0) { // something fishy
-            trigger_error("Price is below 0, please check prices in import data",E_USER_NOTICE);
+            throw new Exception("Price is below 0, please check prices in import data");
         }
 
         $minPrice = number_format(round($minPrice,2),2,'.','');
@@ -59,7 +59,7 @@ function xmlToCSV($text) : string
             preg_replace('/\s+/',' ', // strip multiple whitespaces
                 strip_tags( // remove HTML
                     html_entity_decode( // decode to HTML
-                        str_replace('&nbsp;',' ',$rawInclusionsText), ENT_QUOTES, 'UTF-8' // replace non-breakable bad boys
+                        str_replace('&nbsp;',' ',$rawInclusionsText), ENT_QUOTES, 'UTF-8' // replace non-breakable bad boys, which cannot be replaced as whitespaces
                     )
                 )
             )
